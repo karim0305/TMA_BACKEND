@@ -7,7 +7,7 @@ export const multerConfig: MulterOptions = {
     cloudinary,
     params: async (req, file) => {
       return {
-        folder: 'UserTMA',                // 👈 Cloudinary folder
+        folder: 'TMA-Images',                // 👈 Cloudinary folder
         format: file.mimetype.split('/')[1],   // jpg / png / jpeg
         public_id: file.originalname.split('.')[0], // optional
       };

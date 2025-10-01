@@ -15,6 +15,8 @@ const mongoose_1 = require("@nestjs/mongoose");
 const cloudinary_module_1 = require("./config/cloudinary.module");
 const auth_module_module_1 = require("./user/auth/auth-module.module");
 const user_module_1 = require("./user/user.module");
+const measurement_module_1 = require("./measurement/measurement.module");
+const suitbooking_module_1 = require("./suitbooking/suitbooking.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -55,6 +57,8 @@ exports.AppModule = AppModule = __decorate([
             cloudinary_module_1.CloudinaryModule,
             auth_module_module_1.AuthModule,
             user_module_1.UserModule,
+            measurement_module_1.MeasurementModule,
+            suitbooking_module_1.SuitbookingModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -8,7 +8,7 @@ exports.multerConfig = {
         cloudinary: cloudinary_1.v2,
         params: async (req, file) => {
             return {
-                folder: 'UserTMA',
+                folder: 'TMA-Images',
                 format: file.mimetype.split('/')[1],
                 public_id: file.originalname.split('.')[0],
             };

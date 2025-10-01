@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CloudinaryModule } from './config/cloudinary.module';
 import { AuthModule } from './user/auth/auth-module.module';
 import { UserModule } from './user/user.module';
+import { MeasurementModule } from './measurement/measurement.module';
+import { SuitbookingModule } from './suitbooking/suitbooking.module';
 
 
 @Module({
@@ -48,6 +50,8 @@ import { UserModule } from './user/user.module';
     CloudinaryModule,
     AuthModule,
     UserModule,
+    MeasurementModule,
+    SuitbookingModule,
 
   ],
   controllers: [AppController],

@@ -14,6 +14,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const user_schema_1 = require("../../user/schema/user.schema");
 let Measurement = class Measurement {
+    UserId;
     customerId;
     date;
     Chest;
@@ -36,6 +37,10 @@ let Measurement = class Measurement {
     WaistcoatLength;
 };
 exports.Measurement = Measurement;
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: user_schema_1.User.name, required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Measurement.prototype, "UserId", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: user_schema_1.User.name, required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)

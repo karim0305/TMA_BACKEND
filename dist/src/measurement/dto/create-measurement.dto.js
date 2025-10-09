@@ -13,6 +13,7 @@ exports.CreateMeasurementDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class CreateMeasurementDto {
+    UserId;
     customerId;
     date;
     Chest;
@@ -35,6 +36,15 @@ class CreateMeasurementDto {
     WaistcoatLength;
 }
 exports.CreateMeasurementDto = CreateMeasurementDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "User ID (MongoDB ObjectId)",
+        example: "652d4f8c8d6a1b2f9f8a7c12",
+    }),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateMeasurementDto.prototype, "UserId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: "Customer ID (MongoDB ObjectId)",

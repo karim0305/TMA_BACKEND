@@ -7,6 +7,10 @@ export type MeasurementDocument = Measurement & Document;
 @Schema({ timestamps: true })
 export class Measurement {
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+  UserId: Types.ObjectId; // Reference to User (user)
+
+
+  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   customerId: Types.ObjectId; // Reference to User (customer)
 
   @Prop({ type: Date, required: true })

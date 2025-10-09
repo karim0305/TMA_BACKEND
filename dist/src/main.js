@@ -9,7 +9,7 @@ dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const configService = app.get(config_1.ConfigService);
-    const frontendDomain = [configService.get('VERCEL_DOMAIN'), configService.get('FRONTEND_DOMAIN')
+    const frontendDomain = [configService.get('FRONTEND_DOMAIN')
     ];
     app.enableCors({
         origin: frontendDomain,

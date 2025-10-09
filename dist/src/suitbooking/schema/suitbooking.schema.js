@@ -15,6 +15,7 @@ const mongoose_2 = require("mongoose");
 const user_schema_1 = require("../../user/schema/user.schema");
 const measurement_schema_1 = require("../../measurement/schema/measurement.schema");
 let SuitBooking = class SuitBooking {
+    userId;
     customerId;
     measurementId;
     bookingDate;
@@ -22,31 +23,35 @@ let SuitBooking = class SuitBooking {
     completionDate;
     stitchingFee;
     status;
-    pictures;
+    image;
 };
 exports.SuitBooking = SuitBooking;
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: user_schema_1.User.name, required: true }),
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: user_schema_1.User.name, }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], SuitBooking.prototype, "userId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: user_schema_1.User.name, }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], SuitBooking.prototype, "customerId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: measurement_schema_1.Measurement.name, required: true }),
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: measurement_schema_1.Measurement.name, }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], SuitBooking.prototype, "measurementId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Date, required: true }),
+    (0, mongoose_1.Prop)({ type: Date, }),
     __metadata("design:type", Date)
 ], SuitBooking.prototype, "bookingDate", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Date, required: true }),
+    (0, mongoose_1.Prop)({ type: Date, }),
     __metadata("design:type", Date)
 ], SuitBooking.prototype, "measurementDate", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Date, required: true }),
+    (0, mongoose_1.Prop)({ type: Date, }),
     __metadata("design:type", Date)
 ], SuitBooking.prototype, "completionDate", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Number, required: true }),
+    (0, mongoose_1.Prop)({ type: Number, }),
     __metadata("design:type", Number)
 ], SuitBooking.prototype, "stitchingFee", void 0);
 __decorate([
@@ -60,7 +65,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ type: [String], default: [] }),
     __metadata("design:type", Array)
-], SuitBooking.prototype, "pictures", void 0);
+], SuitBooking.prototype, "image", void 0);
 exports.SuitBooking = SuitBooking = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], SuitBooking);

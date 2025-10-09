@@ -1,5 +1,6 @@
 import { UserRole } from '../enum/user.enum';
 export declare class CreateUserDto {
+    UserId: string;
     name: string;
     email: string;
     phone: string;

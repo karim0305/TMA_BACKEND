@@ -11,6 +11,17 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateSuitBookingDto {
+
+  @ApiProperty({
+    description: "Customer ID (MongoDB ObjectId)",
+    example: "652d4f8c8d6a1b2f9f8a7c12",
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  userId: string;
+  
+
+
   @ApiProperty({
     description: "Customer ID (MongoDB ObjectId)",
     example: "652d4f8c8d6a1b2f9f8a7c12",
@@ -80,5 +91,5 @@ export class CreateSuitBookingDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  pictures?: string[];
+  image?: string[];
 }

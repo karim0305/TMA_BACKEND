@@ -1,4 +1,5 @@
 export declare class CreateMeasurementDto {
+    UserId: string;
     customerId: string;
     date: Date;
     Chest?: string;

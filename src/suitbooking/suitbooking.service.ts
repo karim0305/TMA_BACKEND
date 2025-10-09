@@ -10,6 +10,7 @@ import {
   SuitBookingDocument,
 } from './schema/suitbooking.schema';
 import { CreateSuitBookingDto } from './dto/create-suitbooking.dto';
+import { UpdateSuitbookingDto } from './dto/update-suitbooking.dto';
 
 @Injectable()
 export class SuitBookingService {
@@ -68,6 +69,32 @@ export class SuitBookingService {
     };
   }
 
+
+  async findAllWithUser(): Promise<any> {
+  try {
+    const bookings = await this.suitBookingModel
+      .find()
+      .populate('userId', 'name email phone') // 👈 populate user info
+      .populate('customerId', 'name email phone') // 👈 already in your original code
+      .populate('measurementId', 'measurementDate') // 👈 only bring date field
+      .exec();
+
+    return {
+      success: true,
+      message: '📋 All suit bookings with user and measurement details fetched',
+      data: bookings,
+    };
+  } catch (error) {
+    console.error('❌ Error fetching bookings with user info:', error);
+    return {
+      success: false,
+      message: '❌ Failed to fetch bookings with user info',
+      error: error.message,
+    };
+  }
+}
+
+
   // ✅ Get booking by ID
   async findOne(id: string): Promise<any> {
     const booking = await this.suitBookingModel
@@ -87,6 +114,24 @@ export class SuitBookingService {
       success: true,
       message: '✅ Suit booking fetched successfully',
       data: booking,
+    };
+  }
+
+    async update(id: string, updateSuitBookingDto: UpdateSuitbookingDto) {
+    const updatedBooking = await this.suitBookingModel.findByIdAndUpdate(
+      id,
+      { $set: updateSuitBookingDto },
+      { new: true },
+    );
+
+    if (!updatedBooking) {
+      throw new NotFoundException(`Booking with ID ${id} not found`);
+    }
+
+    return {
+      success: true,
+      message: '✅ Booking updated successfully',
+      data: updatedBooking,
     };
   }
 

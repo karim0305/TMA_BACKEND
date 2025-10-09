@@ -13,6 +13,7 @@ exports.CreateSuitBookingDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class CreateSuitBookingDto {
+    userId;
     customerId;
     measurementId;
     bookingDate;
@@ -20,9 +21,18 @@ class CreateSuitBookingDto {
     completionDate;
     stitchingFee;
     status;
-    pictures;
+    image;
 }
 exports.CreateSuitBookingDto = CreateSuitBookingDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "Customer ID (MongoDB ObjectId)",
+        example: "652d4f8c8d6a1b2f9f8a7c12",
+    }),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateSuitBookingDto.prototype, "userId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: "Customer ID (MongoDB ObjectId)",
@@ -101,5 +111,5 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsString)({ each: true }),
     __metadata("design:type", Array)
-], CreateSuitBookingDto.prototype, "pictures", void 0);
+], CreateSuitBookingDto.prototype, "image", void 0);
 //# sourceMappingURL=create-suitbooking.dto.js.map

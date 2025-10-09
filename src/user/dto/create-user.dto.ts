@@ -1,6 +1,7 @@
 import { 
   IsDate, 
   IsEmail, 
+  IsMongoId, 
   IsNotEmpty, 
   IsOptional, 
   IsString, 
@@ -11,6 +12,15 @@ import { UserRole } from '../enum/user.enum';
 import { Type } from 'class-transformer';
 
 export class CreateUserDto {
+
+  @ApiProperty({
+      description: "User ID (MongoDB ObjectId)",
+      example: "652d4f8c8d6a1b2f9f8a7c12",
+    })
+    @IsMongoId()
+    @IsNotEmpty()
+    UserId: string; // Reference to User (customer)
+  
   @ApiProperty({
     description: 'Full name of the user',
     example: 'Momin Karim',
@@ -18,7 +28,7 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '❌ Name is required' })
   @IsString()
   name: string;
-
+ 
   @ApiProperty({
     description: 'Email address of the user',
     example: 'momin@example.com',
@@ -84,7 +94,6 @@ export class CreateUserDto {
     minLength: 6,
     default: '123456',
   })
-  @IsNotEmpty({ message: '❌ Password is required' })
   @MinLength(6, { message: '❌ Password must be at least 6 characters' })
   password: string;
 
@@ -94,6 +103,7 @@ export class CreateUserDto {
     enum: UserRole,
     default: UserRole.CUSTOMER,
   })
-  @IsNotEmpty({ message: '❌ Role is required' })
+  @IsOptional()
   role: UserRole;
 }
+ 

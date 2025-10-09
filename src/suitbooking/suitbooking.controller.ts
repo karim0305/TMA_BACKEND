@@ -7,11 +7,11 @@ import {
   Body,
   UseInterceptors,
   UploadedFiles,
+  Patch,
 } from '@nestjs/common';
 import { SuitBookingService } from './suitbooking.service';
 import { CreateSuitBookingDto } from './dto/create-suitbooking.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { multerConfig } from '../config/multer.config';
 import {
   ApiTags,
   ApiOperation,
@@ -20,6 +20,7 @@ import {
   ApiBody,
   ApiParam,
 } from '@nestjs/swagger';
+import { UpdateSuitbookingDto } from './dto/update-suitbooking.dto';
 
 @ApiTags('Suit Bookings') // Swagger group
 @Controller('suit-bookings')
@@ -38,7 +39,6 @@ export class SuitBookingController {
     status: 201,
     description: '✅ Suit booking created successfully',
   })
-  @UseInterceptors(FilesInterceptor('pictures', 5, multerConfig)) // up to 5 images
   async create(
     @Body() createSuitBookingDto: CreateSuitBookingDto,
     @UploadedFiles() files?: Express.Multer.File[],
@@ -54,6 +54,14 @@ export class SuitBookingController {
     return this.suitBookingService.findAll();
   }
 
+
+ @ApiOperation({ summary: 'Get all suit bookings with name and measurement' })
+  @ApiResponse({ status: 200, description: '📋 All bookings fetched' })
+   @Get('with-user')
+  async findAllWithUser() {
+    return this.suitBookingService.findAllWithUser();
+  }
+
   // ✅ Get booking by ID
   @Get(':id')
   @ApiOperation({ summary: 'Get a suit booking by ID' })
@@ -64,6 +72,17 @@ export class SuitBookingController {
     return this.suitBookingService.findOne(id);
   }
 
+
+
+   @Patch(':id')
+  @ApiOperation({ summary: 'Update suit booking (partial update)' })
+  @ApiParam({ name: 'id', description: 'Booking MongoDB ObjectId' })
+  update(
+    @Param('id') id: string,
+    @Body() updateSuitBookingDto: UpdateSuitbookingDto,
+  ) {
+    return this.suitBookingService.update(id, updateSuitBookingDto);
+  }
   // ✅ Delete booking
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a suit booking by ID' })

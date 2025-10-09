@@ -16,164 +16,115 @@ export class UserService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
-  // ✅ Create new user with checks
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    // Check for missing required fields (manual check in case class-validator missed something)
-    const emptyFields = Object.entries(createUserDto)
-      .filter(([_, value]) => value === undefined || value === null || value === '')
-      .map(([key]) => key);
-
-    if (emptyFields.length) {
-      throw new BadRequestException({
-        message: '❌ Required fields missing',
-        fields: emptyFields,
-      });
+  // ✅ Create new user
+async create(createUserDto: CreateUserDto): Promise<User> {
+  // 🧹 Remove empty strings so Mongoose defaults apply
+  Object.keys(createUserDto).forEach((key) => {
+    if (createUserDto[key] === '') {
+      delete createUserDto[key];
     }
+  });
 
-    // Check for duplicate email
-    const existingEmail = await this.userModel
-      .findOne({ email: createUserDto.email })
-      .exec();
-    if (existingEmail) {
-      throw new BadRequestException({
-        message: '❌ Email already exists',
-        field: 'email',
-      });
-    }
+  // 🧩 Optional fields that can be skipped
+  const optionalFields = ['role', 'image', 'lastLogin', 'status', 'password'];
 
-    // Check for duplicate phone
-    const existingPhone = await this.userModel
-      .findOne({ phone: createUserDto.phone })
-      .exec();
-    if (existingPhone) {
-      throw new BadRequestException({
-        message: '❌ Phone number already exists',
-        field: 'phone',
-      });
-    }
+  // 🚨 Required fields check
+  const emptyFields = Object.entries(createUserDto)
+    .filter(
+      ([key, value]) =>
+        !optionalFields.includes(key) &&
+        (value === undefined || value === null || value === '')
+    )
+    .map(([key]) => key);
 
-    // Check for duplicate CNIC
-    const existingCnic = await this.userModel
-      .findOne({ cnic: createUserDto.cnic })
-      .exec();
-    if (existingCnic) {
-      throw new BadRequestException({
-        message: '❌ CNIC already exists',
-        field: 'cnic',
-      });
-    }
-
-    try {
-      // Hash password before saving
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(
-        createUserDto.password,
-        saltRounds,
-      );
-
-      const createdUser = new this.userModel({
-        ...createUserDto,
-        password: hashedPassword,
-      });
-
-      return await createdUser.save();
-    } catch (error) {
-      throw new BadRequestException({
-        message: '❌ Failed to create user',
-        error: error.message,
-      });
-    }
+  if (emptyFields.length) {
+    throw new BadRequestException({
+      message: '❌ Required fields missing',
+      fields: emptyFields,
+    });
   }
+
+  // 🕵️ Duplicate checks
+  const existingEmail = await this.userModel.findOne({ email: createUserDto.email });
+  if (existingEmail)
+    throw new BadRequestException({ message: '❌ Email already exists', field: 'email' });
+
+  const existingPhone = await this.userModel.findOne({ phone: createUserDto.phone });
+  if (existingPhone)
+    throw new BadRequestException({ message: '❌ Phone already exists', field: 'phone' });
+
+  const existingCnic = await this.userModel.findOne({ cnic: createUserDto.cnic });
+  if (existingCnic)
+    throw new BadRequestException({ message: '❌ CNIC already exists', field: 'cnic' });
+
+  try {
+    // 🔐 Handle password (default 123456 if missing)
+    let passwordToHash = createUserDto.password;
+    if (!passwordToHash || passwordToHash.trim() === '') {
+      passwordToHash = '123456';
+    }
+
+    const hashedPassword = await bcrypt.hash(passwordToHash, 10);
+
+    // 🧑‍💻 Create user with hashed password
+    const createdUser = new this.userModel({
+      ...createUserDto,
+      password: hashedPassword,
+    });
+
+    return await createdUser.save();
+  } catch (error) {
+    throw new BadRequestException({
+      message: '❌ Failed to create user',
+      error: error.message,
+    });
+  }
+}
+
+
+
 
   // ✅ Get all users
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
-  // ✅ Get single user by ID
+  // ✅ Get single user
   async findOne(id: string): Promise<User> {
     const user = await this.userModel.findById(id).exec();
     if (!user) {
-      throw new NotFoundException({
-        message: '❌ User not found',
-        field: 'id',
-      });
+      throw new NotFoundException({ message: '❌ User not found', field: 'id' });
     }
     return user;
   }
 
-  // ✅ Update user by ID
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    // Prevent duplicate email
-    if (updateUserDto.email) {
-      const existingUser = await this.userModel
-        .findOne({ email: updateUserDto.email })
-        .exec();
-      if (existingUser && existingUser.id !== id) {
-        throw new BadRequestException({
-          message: '❌ Email already exists',
-          field: 'email',
-        });
-      }
-    }
-
-    // Prevent duplicate phone
-    if (updateUserDto.phone) {
-      const existingUser = await this.userModel
-        .findOne({ phone: updateUserDto.phone })
-        .exec();
-      if (existingUser && existingUser.id !== id) {
-        throw new BadRequestException({
-          message: '❌ Phone already exists',
-          field: 'phone',
-        });
-      }
-    }
-
-    // Prevent duplicate CNIC
-    if (updateUserDto.cnic) {
-      const existingUser = await this.userModel
-        .findOne({ cnic: updateUserDto.cnic })
-        .exec();
-      if (existingUser && existingUser.id !== id) {
-        throw new BadRequestException({
-          message: '❌ CNIC already exists',
-          field: 'cnic',
-        });
-      }
-    }
-
-    // If password is being updated → hash it
-    if (updateUserDto.password) {
-      const saltRounds = 10;
-      updateUserDto.password = await bcrypt.hash(
-        updateUserDto.password,
-        saltRounds,
-      );
-    }
-
-    const updatedUser = await this.userModel
-      .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .exec();
-
-    if (!updatedUser) {
-      throw new NotFoundException({
-        message: '❌ User not found',
-        field: 'id',
-      });
-    }
-
-    return updatedUser;
+  // ✅ Update user
+async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  // Agar password bheja jaa raha hai toh hash karo
+  if (updateUserDto.password) {
+    updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
   }
 
-  // ✅ Delete user by ID
+  // Direct update
+  const updatedUser = await this.userModel
+    .findByIdAndUpdate(id, updateUserDto, { new: true })
+    .exec();
+
+  if (!updatedUser) {
+    throw new NotFoundException({ message: '❌ User not found', field: 'id' });
+  }
+
+  return updatedUser;
+}
+
+
+
+
+  // ✅ Delete user
   async remove(id: string): Promise<{ message: string }> {
     const result = await this.userModel.findByIdAndDelete(id).exec();
     if (!result) {
-      throw new NotFoundException({
-        message: '❌ User not found',
-        field: 'id',
-      });
+      throw new NotFoundException({ message: '❌ User not found', field: 'id' });
     }
     return { message: '✅ User deleted successfully' };
   }

@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 export type MeasurementDocument = Measurement & Document;
 export declare class Measurement {
+    UserId: Types.ObjectId;
     customerId: Types.ObjectId;
     date: Date;
     Chest: string;

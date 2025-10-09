@@ -1,4 +1,5 @@
 export declare class CreateSuitBookingDto {
+    userId: string;
     customerId: string;
     measurementId: string;
     bookingDate: Date;
@@ -6,5 +7,5 @@ export declare class CreateSuitBookingDto {
     completionDate: Date;
     stitchingFee: number;
     status?: string;
-    pictures?: string[];
+    image?: string[];
 }

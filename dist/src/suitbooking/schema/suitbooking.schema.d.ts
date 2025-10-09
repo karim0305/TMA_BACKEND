@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 export type SuitBookingDocument = SuitBooking & Document;
 export declare class SuitBooking {
+    userId: Types.ObjectId;
     customerId: Types.ObjectId;
     measurementId: Types.ObjectId;
     bookingDate: Date;
@@ -8,7 +9,7 @@ export declare class SuitBooking {
     completionDate: Date;
     stitchingFee: number;
     status: string;
-    pictures: string[];
+    image: string[];
 }
 export declare const SuitBookingSchema: import("mongoose").Schema<SuitBooking, import("mongoose").Model<SuitBooking, any, any, any, Document<unknown, any, SuitBooking, any, {}> & SuitBooking & {
     _id: Types.ObjectId;

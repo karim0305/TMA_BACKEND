@@ -12,7 +12,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // ✅ Enable CORS
-  const frontendDomain:any =[configService.get<string>('VERCEL_DOMAIN'),configService.get<string>('FRONTEND_DOMAIN', )
+  const frontendDomain:any =[configService.get<string>('FRONTEND_DOMAIN', )
 
    ]
 

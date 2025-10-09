@@ -61,6 +61,29 @@ let SuitBookingService = class SuitBookingService {
             data: bookings,
         };
     }
+    async findAllWithUser() {
+        try {
+            const bookings = await this.suitBookingModel
+                .find()
+                .populate('userId', 'name email phone')
+                .populate('customerId', 'name email phone')
+                .populate('measurementId', 'measurementDate')
+                .exec();
+            return {
+                success: true,
+                message: '📋 All suit bookings with user and measurement details fetched',
+                data: bookings,
+            };
+        }
+        catch (error) {
+            console.error('❌ Error fetching bookings with user info:', error);
+            return {
+                success: false,
+                message: '❌ Failed to fetch bookings with user info',
+                error: error.message,
+            };
+        }
+    }
     async findOne(id) {
         const booking = await this.suitBookingModel
             .findById(id)
@@ -77,6 +100,17 @@ let SuitBookingService = class SuitBookingService {
             success: true,
             message: '✅ Suit booking fetched successfully',
             data: booking,
+        };
+    }
+    async update(id, updateSuitBookingDto) {
+        const updatedBooking = await this.suitBookingModel.findByIdAndUpdate(id, { $set: updateSuitBookingDto }, { new: true });
+        if (!updatedBooking) {
+            throw new common_1.NotFoundException(`Booking with ID ${id} not found`);
+        }
+        return {
+            success: true,
+            message: '✅ Booking updated successfully',
+            data: updatedBooking,
         };
     }
     async remove(id) {

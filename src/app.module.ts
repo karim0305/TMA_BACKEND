@@ -3,8 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-
-import { CloudinaryModule } from './config/cloudinary.module';
 import { AuthModule } from './user/auth/auth-module.module';
 import { UserModule } from './user/user.module';
 import { MeasurementModule } from './measurement/measurement.module';
@@ -46,8 +44,6 @@ import { SuitbookingModule } from './suitbooking/suitbooking.module';
         uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
-
-    CloudinaryModule,
     AuthModule,
     UserModule,
     MeasurementModule,

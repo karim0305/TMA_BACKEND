@@ -2,6 +2,16 @@ import { IsNotEmpty, IsOptional, IsString, IsDateString, IsMongoId } from "class
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateMeasurementDto {
+
+    @ApiProperty({
+    description: "User ID (MongoDB ObjectId)",
+    example: "652d4f8c8d6a1b2f9f8a7c12",
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  UserId: string; // Reference to User (customer)
+
+
   @ApiProperty({
     description: "Customer ID (MongoDB ObjectId)",
     example: "652d4f8c8d6a1b2f9f8a7c12",

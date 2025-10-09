@@ -16,9 +16,8 @@ exports.SuitBookingController = void 0;
 const common_1 = require("@nestjs/common");
 const suitbooking_service_1 = require("./suitbooking.service");
 const create_suitbooking_dto_1 = require("./dto/create-suitbooking.dto");
-const platform_express_1 = require("@nestjs/platform-express");
-const multer_config_1 = require("../config/multer.config");
 const swagger_1 = require("@nestjs/swagger");
+const update_suitbooking_dto_1 = require("./dto/update-suitbooking.dto");
 let SuitBookingController = class SuitBookingController {
     suitBookingService;
     constructor(suitBookingService) {
@@ -30,8 +29,14 @@ let SuitBookingController = class SuitBookingController {
     async findAll() {
         return this.suitBookingService.findAll();
     }
+    async findAllWithUser() {
+        return this.suitBookingService.findAllWithUser();
+    }
     async findOne(id) {
         return this.suitBookingService.findOne(id);
+    }
+    update(id, updateSuitBookingDto) {
+        return this.suitBookingService.update(id, updateSuitBookingDto);
     }
     async remove(id) {
         return this.suitBookingService.remove(id);
@@ -50,7 +55,6 @@ __decorate([
         status: 201,
         description: '✅ Suit booking created successfully',
     }),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('pictures', 5, multer_config_1.multerConfig)),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
@@ -66,6 +70,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SuitBookingController.prototype, "findAll", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Get all suit bookings with name and measurement' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: '📋 All bookings fetched' }),
+    (0, common_1.Get)('with-user'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SuitBookingController.prototype, "findAllWithUser", null);
+__decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Get a suit booking by ID' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'MongoDB ObjectId of the booking' }),
@@ -76,6 +88,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], SuitBookingController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    (0, swagger_1.ApiOperation)({ summary: 'Update suit booking (partial update)' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'Booking MongoDB ObjectId' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_suitbooking_dto_1.UpdateSuitbookingDto]),
+    __metadata("design:returntype", void 0)
+], SuitBookingController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Delete a suit booking by ID' }),

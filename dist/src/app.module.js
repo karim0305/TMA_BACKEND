@@ -12,7 +12,6 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
-const cloudinary_module_1 = require("./config/cloudinary.module");
 const auth_module_module_1 = require("./user/auth/auth-module.module");
 const user_module_1 = require("./user/user.module");
 const measurement_module_1 = require("./measurement/measurement.module");
@@ -54,7 +53,6 @@ exports.AppModule = AppModule = __decorate([
                     uri: configService.get('MONGODB_URI'),
                 }),
             }),
-            cloudinary_module_1.CloudinaryModule,
             auth_module_module_1.AuthModule,
             user_module_1.UserModule,
             measurement_module_1.MeasurementModule,

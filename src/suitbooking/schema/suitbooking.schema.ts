@@ -7,22 +7,27 @@ export type SuitBookingDocument = SuitBooking & Document;
 
 @Schema({ timestamps: true })
 export class SuitBooking {
-  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+
+   @Prop({ type: Types.ObjectId, ref: User.name,})
+  userId: Types.ObjectId; // Reference to user (User)
+
+
+  @Prop({ type: Types.ObjectId, ref: User.name,  })
   customerId: Types.ObjectId; // Reference to customer (User)
 
-  @Prop({ type: Types.ObjectId, ref: Measurement.name, required: true })
+  @Prop({ type: Types.ObjectId, ref: Measurement.name,  })
   measurementId: Types.ObjectId; // Reference to measurement
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, })
   bookingDate: Date; // Booking Date
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date,  })
   measurementDate: Date; // Measurement Date
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, })
   completionDate: Date; // Completion Date
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number,})
   stitchingFee: number; // Stitching Fee
 
   @Prop({
@@ -33,7 +38,7 @@ export class SuitBooking {
   status: string; // Booking status
 
   @Prop({ type: [String], default: [] })
-  pictures: string[]; // Array of picture URLs/paths
+  image: string[]; // Array of image URLs/paths
 }
 
 export const SuitBookingSchema = SchemaFactory.createForClass(SuitBooking);

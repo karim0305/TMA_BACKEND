@@ -15,6 +15,7 @@ const swagger_1 = require("@nestjs/swagger");
 const user_enum_1 = require("../enum/user.enum");
 const class_transformer_1 = require("class-transformer");
 class CreateUserDto {
+    UserId;
     name;
     email;
     phone;
@@ -27,6 +28,15 @@ class CreateUserDto {
     role;
 }
 exports.CreateUserDto = CreateUserDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: "User ID (MongoDB ObjectId)",
+        example: "652d4f8c8d6a1b2f9f8a7c12",
+    }),
+    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "UserId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Full name of the user',
@@ -109,7 +119,6 @@ __decorate([
         minLength: 6,
         default: '123456',
     }),
-    (0, class_validator_1.IsNotEmpty)({ message: '❌ Password is required' }),
     (0, class_validator_1.MinLength)(6, { message: '❌ Password must be at least 6 characters' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
@@ -120,7 +129,7 @@ __decorate([
         enum: user_enum_1.UserRole,
         default: user_enum_1.UserRole.CUSTOMER,
     }),
-    (0, class_validator_1.IsNotEmpty)({ message: '❌ Role is required' }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "role", void 0);
 //# sourceMappingURL=create-user.dto.js.map

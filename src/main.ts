@@ -11,13 +11,18 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  // ✅ Enable CORS
-  const frontendDomain:any =[configService.get<string>('FRONTEND_DOMAIN', )
+  // // ✅ Enable CORS
+  // const frontendDomain:any =[configService.get<string>('FRONTEND_DOMAIN', )
 
-   ]
+  
+
+   const allowedOrigins = [
+    'http://localhost:8081',
+    '*',
+  ];
 
   app.enableCors({
-   origin: frontendDomain,
+   origin: allowedOrigins,
     methods: ['GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

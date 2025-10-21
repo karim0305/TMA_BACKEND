@@ -38,6 +38,13 @@ export class User {
 
   @Prop({ default: "123456" })
   password: string; // Hashed password
+
+  // OTP fields for authentication flows
+  @Prop({ required: false })
+  otp?: string;
+
+  @Prop({ type: Date, required: false })
+  otpExpiresAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

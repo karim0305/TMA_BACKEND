@@ -24,6 +24,8 @@ let User = class User {
     lastLogin;
     status;
     password;
+    otp;
+    otpExpiresAt;
 };
 exports.User = User;
 __decorate([
@@ -70,6 +72,14 @@ __decorate([
     (0, mongoose_1.Prop)({ default: "123456" }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: false }),
+    __metadata("design:type", String)
+], User.prototype, "otp", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: Date, required: false }),
+    __metadata("design:type", Date)
+], User.prototype, "otpExpiresAt", void 0);
 exports.User = User = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], User);

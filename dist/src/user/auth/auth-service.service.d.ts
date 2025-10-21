@@ -9,4 +9,15 @@ export declare class AuthService {
         access_token: string;
         user: any;
     }>;
+    sendOtp(email: string): Promise<{
+        message: string;
+    }>;
+    private sendOtpEmail;
+    verifyOtp(email: string, otp: string): Promise<{
+        message: string;
+        email: string;
+    }>;
+    resetPassword(email: string, password: string): Promise<{
+        message: string;
+    }>;
 }

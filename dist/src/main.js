@@ -9,10 +9,12 @@ dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const configService = app.get(config_1.ConfigService);
-    const frontendDomain = [configService.get('FRONTEND_DOMAIN')
+    const allowedOrigins = [
+        'http://localhost:8081',
+        '*',
     ];
     app.enableCors({
-        origin: frontendDomain,
+        origin: allowedOrigins,
         methods: ['GET', 'HEAD', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
